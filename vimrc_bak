@@ -1,0 +1,163 @@
+" This file will be loaded at the end of .vimrc.
+" This file is designed to add your own vim scripts or override the exVim's .vimrc settings.
+"//////////////////// YunxiZhangy
+
+augroup ex_gui_font
+        " check and determine the gui font after GUIEnter. 
+        " NOTE: getfontname function only works after GUIEnter.  
+        au!
+        set guifont=Ubuntu\ Mono\ 12 
+augroup END
+"@Yunxi color set
+set t_Co=256
+"colorscheme solarized
+silent exec "colorscheme desertEx"
+" silent exec "colorscheme gruvbox"
+
+let g:airline_theme="bubblegum"
+
+" make kernel
+func! CompileAndDownloaderKernel()
+    exec "w"
+    exec "!ald"
+    exec "!dik"
+endfunc
+
+nnoremap <unique> <leader>df :call CompileAndDownloaderKernel()<CR><CR> 
+
+
+" set tabstop=4
+" set softtabstop=4
+set shiftwidth=4
+" set noexpandtab " expandtab
+
+"===========  F5 run python ====================
+autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+autocmd BufRead *.py nmap <F5> :! ./%<CR>
+
+autocmd BufRead *.py set tabstop=4
+autocmd BufRead *.py set nowrap
+autocmd BufRead *.py set go+=b
+"map  <F5>: call CompileKernel() <CR>
+"viminfo---------------------------------
+map <F6> :set sessionoptions+=curdir<cr>:set sessionoptions+=buffers<cr> :set sessionoptions+=winsize<cr>  :mksession! mine.vim<cr> :wviminfo! mine.viminfo<cr> :wall<cr> : qall<cr> 
+map <F7> :source ./mine.vim<cr> :rviminfo ./mine.viminfo<cr> <c-j>:q<cr>  
+"----------------------------------------
+imap hh <ESC>   
+let mapleader=","
+set ignorecase
+set shortmess+=T  "dont display 'xxxxx Press ENTER or type command to continuer'
+set mouse=v
+"double cr disable return messages
+"--------------------------------- yunxi------------------
+""""""""""""""""""""""window 
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+nnoremap <c-d> <c-w>+
+nnoremap <c-g> <c-w>-
+nnoremap <c-p> <c-w><
+nnoremap <c-n> <c-w>>
+
+func Enter()
+endfunc
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+"if has("cscope")
+"    set csprg=/usr/bin/cscope
+"    set csto=0
+"    set cst
+"    set csverb
+"	set cspc=3
+"    "add any database in current dir
+"   if filereadable("cscope.out")
+"    silent cs add cscope.out
+"    "else search cscope.out elsewhere
+"   else
+"      let cscope_file=findfile("cscope.out", ".;")
+"      let cscope_pre=matchstr(cscope_file, ".*/")
+"      if !empty(cscope_file) && filereadable(cscope_file)
+"        exe  " silent cs add" cscope_file cscope_pre
+"        
+"      endif      
+"   endif
+"end
+nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+set csprg=gtags-cscope
+cscope add ./GTAGS
+
+" nnoremap <leader>gg :execute 'gtags -x '.expand('<cword>')<CR>
+" nnoremap <leader>gc :execute 'gtags -c'<CR>
+" nnoremap <leader>gr :execute 'gtags/ref'<CR>
+" nnoremap <leader>ge :execute 'gtags/grep'<CR>
+" vnoremap <leader>gg <ESC>:execute 'Unite gtags/def:'.GetVisualSelection()<CR>
+
+nmap <silent> <tab> :bn!<CR>
+nmap <silent> <s-tab> :bp!<CR>
+" map exUtility#Kwbd(1) to \bd will close buffer and keep window
+" nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
+nnoremap <unique> <C-F4> :call exUtility#Kwbd(1)<CR>
+"open a file from file list of document
+nmap <unique> <leader>f <ESC>^y$:badd <C-r>0<cr>
+
+"cat android kernel messages for debug
+nnoremap <unique> <leader>gk <ESC>:n /tmp/klog<cr>:!adb shell dmesg >/tmp/klog <cr>
+nnoremap <unique> <leader>gl <ESC>:n /tmp/A.logcat<cr>:!adb logcat -d >/tmp/A.logcat <cr>
+
+    " ======================================================== 
+    " ShowMarks
+    " ======================================================== 
+
+    " For marks a-z
+    hi clear ShowMarksHLl
+    hi ShowMarksHLl term=bold cterm=none ctermbg=none gui=none guibg=LightBlue
+    " For marks A-Z
+    hi clear ShowMarksHLu
+    hi ShowMarksHLu term=bold cterm=bold ctermbg=LightRed ctermfg=DarkRed gui=bold guibg=LightRed guifg=DarkRed
+    " For all other marks
+    hi clear ShowMarksHLo
+    hi ShowMarksHLo term=bold cterm=bold ctermbg=LightYellow ctermfg=DarkYellow gui=bold guibg=LightYellow guifg=DarkYellow
+    " For multiple marks on the same line.
+    hi clear ShowMarksHLm
+    hi ShowMarksHLm term=bold cterm=none ctermbg=LightBlue gui=none guibg=SlateBlue
+
+
+" ctrlp setting
+  let g:ctrlp_map = '<c-1>'
+  let g:ctrlp_cmd = 'CtrlP'
+"  let g:loaded_ctrlp = 1
+  let g:ctrlp_by_filename = 1
+  let g:ctrlp_regexp = 0
+  let g:ctrlp_match_window = 'top,order:ttb,min:1,max:20,results:20'
+"  let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+  let g:ctrlp_custom_ignore = '\v[\/](Documentation)$'
+  let g:ctrlp_switch_buffer = 'Et'
+  let g:ctrlp_working_path_mode = './'
+"  let g:ctrlp_use_caching = 1
+"  let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+  let g:ctrlp_max_files = 1000
+  let g:ctrlp_max_depth = 40
+  let g:ctrlp_mruf_relative = 1
+ let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+ " let g:ctrlp_user_command = 'cat cscope.files'        " MacOSX/Linux
+
+ " =1 disable Linuxsty 
+ let g:loaded_linuxsty = 1
+
+ " disable Background Color Erase (BCE) so that color schemes
+ " render properly when inside 256-color tmux and GNU screen.
+ " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+ set t_ut=
+ " set colorscheme when plugin use vimdiff such as fugitive.vim 
+ " it will looks good.
+ au FilterWritePre * if &diff | set t_Co=256 | set bg=dark | colorscheme desertEx| endif 
