@@ -23,14 +23,17 @@
     statusline_inactive_separator = "arrow"
     buffer_index_type = 4
     enable_tabline_filetype_icon = true
-    enable_statusline_display_mode = false
+    enable_statusline_display_mode =false
 
+   #guifont = "DejaVu\ Sans\ Mono\ for\ Powerline"
+   guifont = "DejaVu\ Sans\ Mono\ for\ Powerline\ 11"
+   #guifont = "DejaVu\ Sans\ Mono\ for\ Powerline\ Book\ 11"
+   #guifont=DejaVu\ Sans\ Mono\ 10
+   #guifont="Ubuntu\ Mono\ 12"
     bootstrap_before = "myspacevim#before"
     bootstrap_after = "myspacevim#after"
 
-    guifont="Ubuntu\ Mono\ 12"
 
-#guifont = "DejaVu\ Sans\ Mono\ for\ Powerline"
 #guifont = "None"
 # Enable autocomplete layer
 
@@ -48,3 +51,7 @@ default_height = 30
 
 [[layers]]
   name = "tags"
+
+ 
+[[layers]]
+  name = "VersionControl"
